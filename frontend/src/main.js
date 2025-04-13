@@ -8,4 +8,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './Router'
 import Toaster from '@meforma/vue-toaster'
-createApp(App).use(bootstrap).use(router).use(Toaster).mount('#app')
+import DataTable from 'datatables.net-vue3';
+
+createApp(App).component('DataTable', DataTable).use(bootstrap).use(router).use(Toaster).mount('#app')
