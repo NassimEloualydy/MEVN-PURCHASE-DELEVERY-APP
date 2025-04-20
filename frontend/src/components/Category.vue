@@ -4,6 +4,26 @@
         <div class="container border border-white pb-3 rounded-3">
             <div class="p-2">
                 <h1>Categories</h1>
+                <div class="container">
+                    <form action="">
+                        <div class="row text-center">
+                                <div class="col-md mt-2">
+                                    <input type="text" name="name" placeholder="Name" v-model="categorySearch.name" class="form-control"/>
+                                </div>
+                                <div class="col-md mt-2">
+                                    <input type="text" name="price" placeholder="Description" v-model="categorySearch.description" class="form-control"/>
+                                </div>
+
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md mt-2">
+                                    <input type="button" value="Search" @click="getData" class="btn btn-dark w-100">
+                                </div>
+                            </div>
+
+
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -110,53 +130,46 @@ DataTable.use(DataTablesCore);
     //  import Breadcrump from './breadcrumb.vue';
      export default {
         name:"Category",
-//         mounted() {
-//             this.getData()
+        mounted() {
+            this.getData()
 
-// },
+},
 
         data:function(){
 return {
-//     columns : [
-//   { data: 'first_name' },
-//   { data: 'last_name' },
-//   { data: 'email' },
-//   { data: 'phone' },
-//   { data: 'role' },
-//   { title: "Actions", 
-//     data: null,
-//     orderable: false,
-//     render: function (data, type, row) {
-//         console.log(row)
+    columns : [
+  { data: 'name' },
+  { data: 'description' },
+  { title: "Actions", 
+    data: null,
+    orderable: false,
+    render: function (data, type, row) {
+        console.log(row)
     
-//       return `
+      return `
 
-//                              <button class="btn btn-sm btn-primary me-2"  data-bs-toggle="modal" data-bs-target="#modelForm"
-//                 onclick="event.preventDefault(); window.vm.editRow('${row._id}','${row.first_name}','${row.last_name}','${row.email}','${row.phone}','${row.role}')">
-//                 <i class="fas fa-edit"></i> Edit
-//               </button>
-//               <button class="btn btn-sm btn-danger" 
-//                 onclick="event.preventDefault(); window.vm.deleteRow('${row._id}')">
-//                 <i class="fas fa-trash"></i> Delete
-//               </button>
-//       `;
-//     }
-// }
-// ],
-// data:[],
-// options: {
-//   layout: {
-//     // topStart: 'buttons',
-//   },
-//   responsive: true,
-//   select: false,
-// },
-
+                             <button class="btn btn-sm btn-primary me-2"  data-bs-toggle="modal" data-bs-target="#modelForm"
+                onclick="event.preventDefault(); window.vm.editRow('${row._id}','${row.name}','${row.description}')">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn btn-sm btn-danger" 
+                onclick="event.preventDefault(); window.vm.deleteRow('${row._id}')">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+      `;
+    }
+}
+],
+data:[],
     API_URL:"http://localhost:4000/API",
     category:{
         name:"",
         description:"",
         _id:""
+    },
+    categorySearch:{
+        name:"",
+        description:""
     }
 }
         },
@@ -175,9 +188,11 @@ return {
     }
     ).then(res=>res.json()).then(res=>
     {
+        console.log(res)
         if(res.message){
             this.$toast.success(res.message);
-            // this.getData();
+            this.clearData();
+            this.getData();
             
         }else if(res.err){
                         this.$toast.warning(res.err);                        
@@ -227,63 +242,53 @@ return {
     //         this.userFormData.set(e.target.name,value);
     //     },
 
-    //         editRow(_id,first_name,last_name,email,phone,role) {
-    //             this.user.first_name=first_name;
-    //             this.user._id=_id;
-    //             this.user.last_name=last_name;
-    //             this.user.email=email;
-    //             this.user.phone=phone;
-    //             this.user.role=role;
-    //             this.userFormData.set("first_name",first_name);
-    //             this.userFormData.set("_id",_id);
-    //             this.userFormData.set("last_name",last_name);
-    //             this.userFormData.set("email",email);
-    //             this.userFormData.set("phone",phone);
-    //             this.userFormData.set("role",role);
-    // },
-    // getData(){
-    //     window.vm = this;
-    //         const {token}=JSON.parse(localStorage.getItem("user_info"));
-
-    //         fetch(`${this.API_URL}/user/getData`,{
-    //                 method:"POST",
-    //                 headers:{
-    //                     "Accept":"application/json",
-    //                     "Content-Type":"application/json",
-    //                     "authorization":`Bearer ${token}`
-    //                 },
-    //                 body:JSON.stringify(this.user)
-    //             }
-    //             ).then(res=>res.json()).then(res=>
-    //             {
-    //                 if(res.data){
-    //                     console.log(res.data);
-    //                     this.data=res.data
-    //                 }
-    //             }).catch(error=>{console.log(error)});
-
-    // },
-//     deleteRow(id){
-//         const {token}=JSON.parse(localStorage.getItem("user_info"));
-
-// fetch(`${this.API_URL}/user/deleteUser/${id}`,{
-//         method:"POST",
-//         headers:{
-//             "Accept":"application/json",
-//             "Content-Type":"application/json",
-//             "authorization":`Bearer ${token}`
-//         },
-//         body:JSON.stringify(this.user)
-//     }
-//     ).then(res=>res.json()).then(res=>
-//     {
-//         if(res.message){
-//             this.$toast.success(res.message);
-//             this.getData()
+            editRow(_id,name,description) {
+                this.category.name=name;
+                this.category._id=_id;
+                this.category.description=description;
+    },
+    getData(){
+        window.vm = this;
+            const {token}=JSON.parse(localStorage.getItem("user_info"));
             
-//         }
-//     }).catch(error=>{console.log(error)});
-// },
+            fetch(`${this.API_URL}/category/getData`,{
+                    method:"POST",
+                    headers:{
+                        "Accept":"application/json",
+                        "Content-Type":"application/json",
+                        "authorization":`Bearer ${token}`
+                    },
+                    body:JSON.stringify(this.categorySearch)
+                }
+                ).then(res=>res.json()).then(res=>
+                {
+                    if(res.data){
+                        this.data=res.data
+                    }
+                }).catch(error=>{console.log(error)});
+
+    },
+    deleteRow(id){
+        const {token}=JSON.parse(localStorage.getItem("user_info"));
+
+fetch(`${this.API_URL}/category/deleteCategory/${id}`,{
+        method:"POST",
+        headers:{
+            "Accept":"application/json",
+            "Content-Type":"application/json",
+            "authorization":`Bearer ${token}`
+        },
+        body:JSON.stringify(this.user)
+    }
+    ).then(res=>res.json()).then(res=>
+    {
+        if(res.message){
+            this.$toast.success(res.message);
+            this.getData()
+            
+        }
+    }).catch(error=>{console.log(error)});
+},
 
         },
         components:{
