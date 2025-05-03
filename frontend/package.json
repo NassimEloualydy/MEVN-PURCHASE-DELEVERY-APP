@@ -19,6 +19,7 @@
     "datatables.net-select-dt": "^2",
     "datatables.net-vue3": "^3",
     "nodemon": "^3.1.9",
+    "swiper": "^11.2.6",
     "toastr": "^2.1.4",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",

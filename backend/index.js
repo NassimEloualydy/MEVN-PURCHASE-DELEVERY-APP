@@ -10,8 +10,10 @@ const database=process.env.database
 
 const userRoutes=require("./routes/userRoutes");
 const categoryRoutes=require("./routes/categoryRoutes");
+const productRoutes=require("./routes/productRoutes");
 app.use("/API/user",userRoutes);
 app.use("/API/category",categoryRoutes);
+app.use("/API/product",productRoutes);
 mongoose.connect(database).then(()=>{
 console.log("Database Connected !!")
 }).catch((err)=>{

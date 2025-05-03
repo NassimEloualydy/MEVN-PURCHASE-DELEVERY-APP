@@ -22,7 +22,11 @@ body{
   position: absolute !important;
   right: 8% !important;
 }
-
+.imgProduct{
+  height: 170px !important;
+  object-fit: contain !important;
+   
+}
 .scrolTextContainer:nth-child(1){
     position: relative;
     height: 75vh;

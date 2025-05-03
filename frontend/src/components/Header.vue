@@ -11,6 +11,10 @@
               <a  :class="[nativeUrl==='/Home' ? 'nav-link active fw-bolder':'nav-link']" @click="navigateMenu('/Home')" aria-current="page" >Home</a>
             </li>
             <li v-if="user_connected.first_name !=''" class="nav-item z-level-5 select-bnt">
+              <a  :class="[nativeUrl==='/Product' ? 'nav-link active fw-bolder':'nav-link']" @click="navigateMenu('/Product')" >Products</a>
+            </li>
+
+            <li v-if="user_connected.first_name !=''" class="nav-item z-level-5 select-bnt">
               <a  :class="[nativeUrl==='/Category' ? 'nav-link active fw-bolder':'nav-link']" @click="navigateMenu('/Category')" >Categories</a>
             </li>
 
