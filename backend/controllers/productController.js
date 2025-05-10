@@ -100,8 +100,11 @@ exports.submitProduct=async (req,res)=>{
 }
 
 exports.getData=async (req,res)=>{
+    
     const {name,default_code,product_type,invoice_policy,sale_price,cost,category}=req.body;
     const searchQuery={}
+    
+
     searchQuery.name={$regex:'.*'+name+'.*',$options:'i'}
     searchQuery.default_code={$regex:'.*'+default_code+'.*',$options:'i'}
     searchQuery.product_type={$regex:'.*'+product_type+'.*',$options:'i'}
@@ -140,4 +143,35 @@ exports.deleteProduct=async (req,res)=>{
     const product=await Product.findOneAndDelete({_id})
     if(product)
         return res.json({message:"Product Deleted With Success !!"});
+}
+exports.getDataByCategory=async (req,res)=>{
+    const results = await Product.aggregate([
+        {
+          $group: {
+            _id: "$category",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $lookup: {
+            from: "categories", // assuming your Category collection is named "categories"
+            localField: "_id",
+            foreignField: "_id",
+            as: "categoryInfo"
+          }
+        },
+        {
+          $unwind: "$categoryInfo"
+        },
+        {
+          $project: {
+            categoryName: "$categoryInfo.name", // assuming Category has a 'name' field
+            count: 1,
+            _id: 0
+          }
+        }
+      ]);
+      console.log(results);
+      return res.json({data:results});
+
 }
